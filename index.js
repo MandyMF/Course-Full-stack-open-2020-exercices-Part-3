@@ -5,37 +5,46 @@ const morgan = require('morgan')
 //middleware
 app.use(express.json())
 
+morgan.token('dataOnPost', function (req, res) {
+    if( req.method === 'POST') 
+        return JSON.stringify(req.body)
+    return null
+})
+
 //all work, pick your poison
-//app.use(morgan('tiny'))
-//app.use(morgan(':method :url :status :res[content-length] :response-time ms'))
-
 //using a function
-
-app.use(morgan (function(tokens, req, res){
-    return [
-        tokens.method(req,res),
-        tokens.url(req,res),
-        tokens.status(req,res),
-        tokens.res(req,res, 'content-length'),
-        '-',
-        tokens['response-time'](req, res), 'ms'
-    ].join(' ')
-}))
-
-//creating a token and using it:
-/*morgan.token('my-tiny', function (tokens, req, res) {
+app.use(morgan(function (tokens, req, res) {
     return [
         tokens.method(req, res),
         tokens.url(req, res),
         tokens.status(req, res),
         tokens.res(req, res, 'content-length'),
         '-',
-        tokens['response-time'](req, res), 'ms'
-    ].join(' ')}
-)
+        tokens['response-time'](req, res), 'ms',
+        tokens.dataOnPost(req, res)
+    ].join(' ')
+}))
+//----------------------
+
+//creating a token and using it:
+/*morgan.token('my-tiny', function (tokens, req, res) {
+        return [        
+            tokens.method(req,res),
+            tokens.url(req,res),
+            tokens.status(req,res),
+            tokens.res(req,res, 'content-length'),
+            '-',
+            tokens['response-time'](req, res), 'ms',
+            tokens.dataOnPost(req,res)    
+        ].join(' ')
+    
+})
 app.use(morgan('my-tiny'))*/
 //------------------------------
 
+//using a string of pre-define tokens
+//app.use(morgan(':method :url :status :res[content-length] - :response-time ms :dataOnPost'))
+//--------------------------------------
 
 
 let persons = [
