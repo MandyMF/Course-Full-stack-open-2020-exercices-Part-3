@@ -1,0 +1,13 @@
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name":"new Contact",
+    "number":"69696948484"
+}
+//{
+//    "name":"new Contact"
+//}
+//{
+//    "number":"69696948484"
+//}
