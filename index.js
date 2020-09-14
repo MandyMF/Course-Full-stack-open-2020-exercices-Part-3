@@ -41,13 +41,31 @@ app.get('/api/persons/:id', (req, res) => {
     }
 })
 
-app.delete('/api/persons/:id', (req, res)=>{
+app.delete('/api/persons/:id', (req, res) => {
     const id = Number(req.params.id)
 
-    persons= persons.filter((person)=> person.id !== id)
+    persons = persons.filter((person) => person.id !== id)
     res.status(204).end()
 })
 
+const generateNewId = () => {
+    return Math.floor(Math.random() * 999999999999)
+}
+
+app.post('/api/persons/', (req, res)=>{
+    const body = req.body
+    
+    const new_person=
+    {
+        name: body.name,
+        number: body.number,
+        id:generateNewId()
+    }
+
+    persons = persons.concat(new_person)
+
+    res.json(new_person)
+})
 
 
 const PORT = 3001
