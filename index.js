@@ -126,5 +126,5 @@ app.post('/api/persons/', (req, res) => {
 })
 
 
-const PORT = 3001
+const PORT = window.process.PORT || 3001
 app.listen(PORT, () => console.log(`Server is runnning on port ${PORT}`))
