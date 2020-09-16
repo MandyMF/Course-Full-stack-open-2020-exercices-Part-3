@@ -1,7 +1,7 @@
-POST http://localhost:3001/api/persons
+POST https://calm-castle-44023.herokuapp.com/api/persons
 Content-Type: application/json
 
 {
-    "name":"new Contact",
-    "number":"696969"
+    "name":"new Contact2",
+    "number":"696943469"
 }
