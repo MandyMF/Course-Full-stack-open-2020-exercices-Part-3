@@ -7,6 +7,7 @@ const morgan = require('morgan')
 //middleware
 app.use(cors())
 app.use(express.json())
+app.use(express.static('build'))
 
 morgan.token('dataOnPost', function (req, res) {
     if( req.method === 'POST') 
