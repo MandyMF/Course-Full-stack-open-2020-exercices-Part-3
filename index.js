@@ -69,20 +69,24 @@ app.get('/api/persons', (req, res) => {
 
 app.get('/info', (req, res) => {
 
-    res.send(
-        `<p>
-            Phonebook has info for ${persons.length} people
-        </p>
-        <p>
-            ${new Date}
-        </p>`
-    )
+    Person.find({}).then(persons =>{
+        res.send(
+            `<p>
+                Phonebook has info for ${persons.length} people
+            </p>
+            <p>
+                ${new Date}
+            </p>`
+        )
+    })
+
+
 })
 
 app.get('/api/persons/:id', (req, res) => {
-    const id = Number(req.params.id)
+    const id = req.params.id
 
-    const person_requested = persons.find((person) => person.id === id)
+    Person.findById(id).then(person_requested =>{
 
     if (person_requested) {
         res.json(person_requested)
@@ -90,6 +94,7 @@ app.get('/api/persons/:id', (req, res) => {
     else {
         res.status(404).end()
     }
+})
 })
 
 app.delete('/api/persons/:id', (req, res, next) => {

@@ -1,1 +1,1 @@
-GET  https://calm-castle-44023.herokuapp.com/info
+GET  http://localhost:3001/info
