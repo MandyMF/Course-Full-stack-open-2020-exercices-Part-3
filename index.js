@@ -111,22 +111,15 @@ app.post('/api/persons/', (req, res) => {
             error: 'body and name are needed'
         })
     }
-    if (persons.find(person => person.name === body.name)) {
-        return res.status(409).json({
-            error: 'name must be unique'
-        })
-    }
 
-    const new_person =
-    {
+    const person = new Person({
         name: body.name,
-        number: body.number,
-        id: generateNewId()
-    }
+        number: body.number
+    })
 
-    persons = persons.concat(new_person)
-
-    res.json(new_person)
+    person.save().then(result => {
+        res.json(result)
+    })
 })
 
 
