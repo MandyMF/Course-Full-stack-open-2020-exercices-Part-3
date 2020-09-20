@@ -115,13 +115,13 @@ app.put('/api/persons/:id',(req, res, next)=>{
         number: body.number
     }
 
-    Person.findByIdAndUpdate(req.params.id, person, {new:true})
+    Person.findByIdAndUpdate(req.params.id, person, {new:true, runValidators: true, context: 'query' })
     .then(updatedPerson =>{
         res.json(updatedPerson)
     }).catch(error => next(error))
 })
 
-app.post('/api/persons/', (req, res) => {
+app.post('/api/persons/', (req, res, next) => {
     const body = req.body
 
     if (!body.name || !body.number) {
@@ -137,7 +137,7 @@ app.post('/api/persons/', (req, res) => {
 
     person.save().then(result => {
         res.json(result)
-    })
+    }).catch(error=> next(error))
 })
 
 const unknownEndpoint = (request, response) => {
@@ -147,10 +147,16 @@ const unknownEndpoint = (request, response) => {
 app.use(unknownEndpoint)
 
 const errorHandler = (error, request, response, next) => {
-    console.error(error.message)
+    console.log(error.message)
 
     if (error.name === 'CastError') {
         return response.status(400).send({ error: 'malformatted if' })
+    }
+    if(error.name === 'ValidationError' && error.errors.name && error.errors.name.properties.type === 'unique') {
+        return response.status(403).send({ error: 'Persons with the same names are not allowed in the phonebook' })
+    }
+    if(error.name === 'ValidationError') {
+        return response.status(400).send({ error: error.message})
     }
 
     next(error)
